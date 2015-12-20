@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/_publicPanel.cshtml";
+    ViewBag.Title = "Schedule";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form class="form">
+            <legend> <button type="button" id="addcourse" class="btn btn-primary">+</button> Add Courses</legend>
+            <h4>Course</h4>
+            <div class="form-inline">
+                <div class="form-group floating-label">
+                    <input id="courseCode" class="form-control floating-label" type="text" placeholder="Course Code">
+                </div>
+                <div class="form-group">
+                    <input id="courseTitle" class="form-control floating-label" type="text" placeholder="Title" />
+                </div>
+                <div class="form-group">
+                    <select id="courseHours"class="form-control">
+                        <option>(3,0)</option>
+                        <option>(3,1)</option>
+                        <option>(2,1)</option>
+                        <option>(4,0)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input id="courseAbbr" class="form-control floating-label" type="text" placeholder="Abbrevation" />
+                </div>
+                <hr />
+            </div>
+            <h4>Teacher</h4>
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="radio radio-primary">
+                        <label>
+                            <input type="radio" name="teachRadio" id="optionsRadios1" value="0" checked="checked" />
+                            Select Teacher
+                        </label>
+                    </div>
+                    <div class="radio radio-primary">
+                        <label>
+                            <input type="radio" name="teachRadio" id="optionsRadios1" value="1" />
+                            Add Teacher
+                        </label>
+                    </div>
+                </div> &nbsp; &nbsp;
+                <div id="selectteacher" class="form-group">
+                    <input class="form-control floating-label" type="text" placeholder="Select Teacher" />
+                </div>
+                <div id="addteacher" class="form-group hidden">
+                    <input class="form-control floating-label" type="text" placeholder="Name" />
+                </div>
+            </div>
+            <h4>Program and Section</h4>
+            <div class="form-inline">
+                <div id="selectprogram" class="form-group">
+                    <input class="form-control floating-label" type="text" placeholder="Select Course" />
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+    teachers = [];
+    program = [];
+    selectedTeacher = null;
+    selectedProgram = null;
+    setTimeout(function () {
+        $.material.init();
+        $.ajax({
+            url: "/course/getSearchables",
+            type: "GET"
+        }).done(function (response) {
+            k = JSON.parse(response);
+            teachers = k.teachers;
+            program = k.program;
+
+            $("#selectteacher input").autocomplete({
+                source: k.teachers,
+                select: function (event, ui) { console.log('yolokins', event, ui); selectedTeacher = ui.item.value }
+            });
+            $("#selectprogram input").autocomplete({
+                source: k.program,
+                select: function (event, ui) { console.log('yolokins', event, ui); selectedProgram = ui.item.value.substring(1, ui.item.value.indexOf('>')) }
+            });
+        })
+
+    }, 100)
+    $("input[type=radio][name=teachRadio]").on('click', function () {
+        console.log(this.value);
+        if (this.value == 1) {
+            $('#addteacher').removeClass('hidden');
+            $('#selectteacher').addClass('hidden');
+        }
+        else if (this.value == 0) {
+            $('#addteacher').addClass('hidden');
+            $('#selectteacher').removeClass('hidden');
+        }
+    })
+    $("#addcourse").on("click", function () {
+        course = {
+            code: $("#courseCode")[0].value,
+            title: $("#courseTitle")[0].value,
+            hours: $("#courseHours")[0].value,
+            abbr: $("#courseAbbr")[0].value,
+            teacherid: selectedTeacher.substring(1, selectedTeacher.indexOf(">")),
+            teachername: selectedTeacher.substring(selectedTeacher.indexOf(">") + 1),
+            addteacher: $('input[type=radio][value=1]').is(':checked').toString(),
+            programid: selectedProgram
+        }
+
+        var _goah = true;
+        for (key in course) {
+            if (course[key] == "" || course == undefined)
+                _goah = false;
+        }
+        if (!parseInt(programid) == NaN)
+            _goah = false;
+        if (!parseInt(teacherid) == NaN && addteacher == true)
+            _goah = false;
+
+        addCourse(_goah,course);
+
+    })
+    addCourse = function (_k,_C) {
+        if (!_k) { alert("Incomplete feilds"); return }
+
+        $.ajax({
+            url: "/course/addCourse",
+            type: "POST",
+            data: { "coursejson": JSON.stringify(_C) }
+        }).done(function (response) {
+            console.log(response);
+        });
+    }
+</script>

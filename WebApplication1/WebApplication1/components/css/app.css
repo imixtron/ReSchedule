@@ -1,0 +1,410 @@
+/*
+    author: imixtron;
+*/
+
+/*---@NAVIGATION---*/
+nav.nav-c {
+    height: 60px;
+    padding: 0px 20px 0 20px;
+}
+
+nav.nav-c > *{
+    display:inline-block;
+    position: relative;
+    bottom: 0;
+    vertical-align: bottom;
+}
+
+nav.nav-c .identity img,
+nav.nav-c .identity{
+    height: 60px;
+}
+
+nav.nav-c .links{
+    margin-bottom: 0px
+}
+
+nav.nav-c .links ul{
+    list-style: none;
+    margin: 0;
+}
+
+nav.nav-c .links > ul > li:hover{
+    border-bottom:#0cc2aa 3px solid;
+}
+
+nav.nav-c .links > ul > li{
+    border-bottom:transparent 3px solid;
+    display: inline-block;
+    transition: all 300ms ease-in-out;
+}
+
+a {
+    text-decoration: none;
+}
+nav.nav-c .links > ul > li a{
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+}
+
+nav.nav-c .userinfo img{
+    width: 50px;
+}
+
+nav.nav-c .userinfo {
+    margin-top: 7px;
+}
+
+nav.nav-c .userinfo > *{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 7px;
+}
+
+nav.nav-c .userinfo .dropdown-menu{
+	margin-top: 4px;
+	border-top: 3px #0cc2aa solid;
+}
+
+/*---@Cards---*/
+@media (max-width: 766px) { 
+	.Card.Badge {
+		width: 100%;
+	}
+}
+.Card {
+    width: 349px;
+    height: 215px;
+    display: inline-block;
+    margin: 7px 5px;
+    cursor: pointer;
+}
+.Card img{
+    width:50px
+}
+.Card .progress{
+    height: 15px
+}
+.Card .panel-body > div:first-child{
+    text-align: center;
+}
+.Card .panel-body > div{
+    padding: 0 5px;
+}
+.Card .panel-body{
+    padding: 15px 0;
+}
+.Card h4 small{
+    font-size: 8pt;
+}
+.Card h4 {
+    font-size: 10pt;
+    margin: 0;
+}
+#profileBadge.Badge .available {
+    width: 25px;
+    height: 25px;
+    right: 35px;
+}
+.Badge .available{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: relative;
+    bottom: 0;
+    display: inline-block;
+    cursor: pointer;
+    right: 17px;
+    vertical-align: bottom;
+}
+.Badge .available,
+.Badge .available-false{
+    background-color: rgba(119, 119, 119, 1);
+}
+.Badge .available-true{
+    background-color: rgba(76, 166, 80, 1);
+}
+.Card.Badge .lang span:hover:not(.flag-icon) {
+    color: rgba(0,0,0,1);
+}
+.Card.Badge .lang span:not(.flag-icon) {
+    font-size: 8pt;
+    color: rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+.Card.Badge .explist ul {
+    list-style: none;
+    padding: 0 0 0 5px;
+}
+.Card.Badge .explist h5{
+    margin: 5px 0 3px 0;
+}
+.Card.Badge .explist li > small{
+    font-size: 10pt;
+    color: #7d7d7d;
+    vertical-align: text-bottom;
+}
+.Card.Badge .explist li {
+    font-size: 10pt;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.explist {
+    width: 50%;
+    display: block;
+    float: left;
+    height: 82px;
+    text-overflow: ellipsis;
+}
+
+.Badge .progress-bar span small{
+	font-weight: normal;
+}
+.Badge .progress-bar span {
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    top: 2px;
+    right: 18px;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 4px rgba(0,0,0,1);
+}
+/*---@Resources---*/
+.Badge.Badge-small {
+    width: 300px;
+}
+.res-sidebox{
+	position: fixed;
+	right:0;
+}
+.res-sidebox ul{
+	list-style: none;
+	padding: 0;
+}
+
+/*---@Profile---*/
+
+#profileBadge .panel-body{
+	padding-bottom: 0;
+}
+#profileBadge .stats > div:first-child {
+    border-right-color: transparent;
+}
+
+#profileBadge .stats > div:last-child {
+    border-left-color: transparent;
+}
+#profileBadge .stats > div{
+    border: 1px rgba(30,30,30,0.09) solid;
+}
+#profileBadge .stats > div > a{
+	display: block;
+    padding: 10px 0;
+}
+small.nego {
+        display: inline-block;
+    background-color: #4CA650;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0 3px rgba(51, 51, 51, 0.55);
+    font-size: 7pt;
+}
+	/* @Override tooltip*/
+	.Badge .img .available-false + .tooltip .tooltip-inner {
+	    background-color: rgba(119, 119, 119, 0.8);
+	}
+	.Badge .img .available-true + .tooltip .tooltip-inner {
+	    background-color: rgba(76, 166, 80, 0.8);
+	}
+	.Badge .img .available-true + .tooltip .tooltip-arrow {
+	    border-top-color: rgba(76, 166, 80, 0.8) !important;
+	}
+	.tooltip-inner {
+	    padding: 11px;
+	    display: block;
+	    background: #333;
+	}
+
+	.tooltip-arrow {
+	    display: block !important;
+	}
+
+	.progress .tooltip {
+	    margin-top: -1px;
+	}
+
+	/* @Override Progress bars */
+
+	.progress .progress-bar-nonsap {
+	    background-color: #95BBCC;
+	}
+	.Badge .progress{
+	    height: 25px;
+	    margin-bottom: 3px;
+	}
+
+	.Badge .progress-bar {
+		text-align: left;
+		white-space: nowrap;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor: pointer;
+	}
+
+	.Badge .progress-bar:hover {
+	    border-top: rgba(0,0,0,0.25) 5px solid;
+	}
+	.Badge .progress-bar > .progress-type {
+		padding-left: 10px;
+	}
+
+	.Badge .progress-meter {
+		min-height: 10px;
+		border-bottom: 2px solid rgb(160, 160, 160);
+	}
+
+	.Badge .progress-meter > .meter {
+		position: relative;
+		float: left;
+		min-height: 10px;
+		border-width: 0px;
+		border-style: solid;
+		border-color: rgb(160, 160, 160);
+	}
+
+	.Badge .progress-meter > .meter-left {
+		border-left-width: 2px;
+	}
+
+	.Badge .progress-meter > .meter-right {
+		float: right;
+		border-right-width: 2px;
+	}
+
+	.Badge .progress-meter > .meter-right:last-child {
+		border-left-width: 2px;
+	}
+
+	.Badge .progress-meter > .meter > .meter-text {
+		position: absolute;
+		display: inline-block;
+		bottom: -20px;
+		width: 100%;
+		font-weight: 700;
+		font-size: 0.85em;
+		color: rgb(160, 160, 160);
+		text-align: left;
+	}
+
+	.Badge .progress-meter > .meter.meter-right > .meter-text {
+		text-align: right;
+	}
+
+/*===OVERRIDE-BOOTSTRAP===*/
+.dropdown-menu{
+    display: block;
+    -o-transform-origin: top left;
+    -webkit-transform-origin: top left;
+    -moz-transform-origin: top left;
+    transform-origin: top left;
+    opacity: 0;
+    -webkit-transform: scale(.8);
+    -ms-transform: scale(.8);
+    transform: scale(.8);
+    -webkit-transition: all 250ms cubic-bezier(.24,.22,.015,1.56);
+    transition: all 250ms cubic-bezier(.24,.22,.015,1.56);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    pointer-events: none;
+}
+.open>.dropdown-menu {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    pointer-events: auto;
+    display: block!important;
+}
+.Card.Project *{
+	text-align: left !important;
+}
+.Card.Project h3 small{
+
+}
+.Card.Project h3{
+	margin: 0;
+	text-align: left;
+	font-size: 14pt
+}
+.Card.Project span.desc {
+    height: 55px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.Card.Project hr{
+    margin: 5px;
+}
+.pass{
+	font-size: 8pt;
+}
+.noUi-tooltip{
+    position: relative;
+    top: 10px;
+}
+.checkbox-dropdown .dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}
+.checkbox-dropdown label {
+    width: 100%;
+    padding: 0 10px;
+}
+.checkbox-dropdown{
+    border-radius: 500px;
+}
+.rangeinator {
+    padding: 5px 0;
+}
+
+#schedule > table{
+    font-size: 9pt;
+    background-color: #fff;
+}
+#schedule td.slots {
+    padding: 10px 0 !important;
+    width: 20px !important;
+    text-align: center;
+}
+#schedule td.ends{
+    border-right: 1px solid rgba(0,0,0,0.07) !important;
+}
+#schedule > table td > table td {
+    height: 40px;
+}
+
+#schedule tr.rows td.slots {
+    height: 80px;
+}
+
+td {
+    vertical-align: middle;
+}
+ul.filters {
+    padding: 0;
+    list-style: none;
+}
+ul.filters > li{
+    display: inline-block;
+}
+.form-inline .radio label {
+    padding-left: 30px;
+}

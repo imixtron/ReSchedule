@@ -1,0 +1,223 @@
+﻿@{
+    Layout = "~/Views/_publicPanel.cshtml";
+    ViewBag.Title = "Schedule";    
+}
+<style>
+    table tr td:hover {
+        background-color: rgba(0,0,0,0.3)
+    }
+</style>
+
+<ul class="filters">
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <span id="campusName">90</span> Campus
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)" onclick="setCampus('90')">90</a></li>
+            <li><a href="javascript:void(0)" onclick="setCampus('100')">100</a></li>
+            <li><a href="javascript:void(0)" onclick="setCampus('154')">154</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            Program <small id="courseName"></small>
+            <span class="caret"></span>
+        </a>
+        <ul id="courses" class="dropdown-menu">
+            <li>
+                    <a onclick="setCourse('ALL')">ALL</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a class="btn btn-sm btn-primary" href="javascript:void(0)" onclick="schedulify()">Generate</a>
+    </li>
+</ul>
+
+<div id="schedule">
+
+</div>
+
+<script>
+    course = "ALL";
+    campus = 90;
+    pid = {length:0}
+
+    setCampus = function (d) {
+        $("#campusName").text(d);
+        campus = d;
+    }
+
+    setCourse = function (d) {
+        if (d == "ALL")
+            $("#courseName").text(" ");
+        else
+            $("#courseName").text(d);
+        course = d;
+    }
+
+    schedulify = function () {
+        if (!course) course = "ALL"
+        if (!campus) course = "90"
+        generateSchedule(campus, course);
+    }
+
+    getCourses = function () {
+        $.ajax({
+            url: "/schedule/courses",
+            type: "GET"
+        }).done(function (response) {
+            c = JSON.parse(response);
+            $(c).each(function () {
+                if (pid[this.programid] == undefined) {
+                    pid[this.programid] = this.sectionname.substr(0, this.sectionname.lastIndexOf(' '));
+                    pid.length++;
+                }
+            });
+
+            for (key in pid) {
+                if(key!="length")
+                $('<li><a href="javascript:void(0)" onclick="setCourse(\'' + pid[key] + '\')">' + pid[key] + '</a></li>')
+                    .appendTo($('#courses'))
+            }
+
+            console.log("DONE");
+            //$("#courses")
+        })
+    }
+
+    getCourses();
+
+    generateSchedule = function (c,p) {
+        $("#schedule").html(" ");
+        $.ajax({
+            url:"/schedule/fetchDataCoallation?campus="+c+"&program="+p,
+            type:"GET"
+        }).done(function(response){
+            json = $.parseJSON(response);
+            console.log(json);
+            var days = json["days"];
+            var rooms = json["rooms"];
+            var slots = json["slotstype"];
+            var schedule = json["schedule"]
+            console.dir(schedule);
+            var table = $("<table></table>")
+			    .attr({ class: "table table-hover table-responsive table-condensed", width: "1800px" })
+
+            var tr = $("<tr></tr>").appendTo(table);
+            $("<td></td>").attr({ class: "days" }).appendTo(tr);
+            $("<td></td>").attr({ class: "rooms ends" }).appendTo(tr);
+
+            $.each(slots, function (slotindex, slot) {
+                $("<td></td>").attr({ class: ["slots ends header"], colspan: "3" })
+				    .text(slot.slotno + " Time Slot")
+				    .appendTo(tr);
+            });
+
+            var tr = $("<tr></tr>").appendTo(table);
+            $("<td></td>").attr({ class: "days" }).appendTo(tr);
+            $("<td></td>").attr({ class: "rooms ends" }).appendTo(tr);
+
+            $.each(slots, function (slotindex, slot) {
+                $("<td></td>").attr({ class: "slots ends header", colspan: "3" })
+				    .text(slot.duration)
+				    .appendTo(tr);
+            });
+
+            var tr = $("<tr></tr>").attr({ align: "center" }).appendTo(table);
+            $("<td></td>").attr({ class: "days" }).text("Days").appendTo(tr);
+            $("<td></td>").attr({ class: "rooms ends header" }).text("Rooms").appendTo(tr);
+
+            for (var lbl = 1; lbl <= 4; lbl++) {
+                $("<td></td>").attr({ class: "header", width: "130" }).text("Teacher").appendTo(tr);
+                $("<td></td>").attr({ class: "header", width: "130" }).text("Subject").appendTo(tr);
+                $("<td></td>").attr({ class: "header ends", width: "130" }).text("Class").appendTo(tr);
+            }
+            $.each(days, function (dayindex, day) {
+                //console.log(day);
+                rowspan = true;
+                $.each(rooms, function (roomindex, room) {
+                    //console.log(room);
+                    var tr = $("<tr></tr>").attr({ align: "center", class: "body rows" }).appendTo(table);
+                    if (rowspan) {
+                        var td = $("<td></td>").attr({ class: "days", rowspan: rooms.length }).appendTo(tr);
+                        $("<div></div>").attr({ class: "flip" }).text(day.dayname).appendTo(td);
+                        rowspan = false;
+                    }
+                    $("<td></td>").attr({ class: ["rooms", "ends"].join(' ') }).text(room.roomno).appendTo(tr);
+                    $.each(slots, function (slotindex, slot) {
+                        //console.log(slot);
+                        key = day.dayid + "-" + room.roomid + "-" + slot.slotno;
+
+                        //console.log(key);
+
+                        if (schedule[key] != undefined) {
+                            //console.log(key);
+                            if (schedule[key][0].occupied == 3) {
+                                $("<td></td>").attr({ class: "slots", width: "130", key:key}).text(schedule[key][0].teachername).appendTo(tr);
+                                $("<td></td>").attr({ class: "slots", width: "130", key: key }).text(schedule[key][0].title).appendTo(tr);
+                                $("<td></td>").attr({ class: ["slots", "ends"].join(' '), width: "130", key: key }).text(schedule[key][0].sectionname).appendTo(tr);
+                            } else {
+                                var ttr = $("<td></td>").attr({ class: "slots", width: "130", key: key }).appendTo(tr);
+                                var ctr = $("<td></td>").attr({ class: "slots", width: "130", key: key }).appendTo(tr);
+                                var btr = $("<td></td>").attr({ class: ["slots", "ends"].join(' '), width: "130", key: key }).css({}).appendTo(tr);
+
+                                var teacher = ["", ""];
+                                var course = ["", ""];
+                                var batch = ["", ""]
+
+                                if (schedule[key].length == 2) {
+                                    teacher[0] = schedule[key][0].teachername;
+                                    course[0] = schedule[key][0].title;
+                                    batch[0] = schedule[key][0].sectionname + " (" + schedule[key][0].duration + ")";
+                                    teacher[1] = schedule[key][1].teachername;
+                                    course[1] = schedule[key][1].title;
+                                    batch[1] = schedule[key][1].sectionname + " (" + schedule[key][1].duration + ")";
+
+                                } else {
+                                    teacher[schedule[key][0].occupied - 1] = schedule[key][0].teachername;
+                                    course[schedule[key][0].occupied - 1] = schedule[key][0].title;
+                                    batch[schedule[key][0].occupied - 1] = schedule[key][0].sectionname + " (" + schedule[key][0].duration + ")";
+                                }
+
+                                subtable = $("<table></table>").attr({ border: "0" }).css({ width: "100%" });
+                                subtr = $("<tr></tr>").appendTo(subtable)
+                                $("<td></td>").text(teacher[0]).attr({ align: "center", key: key }).css({ "border-bottom": "0px solid #808080" }).appendTo(subtr);
+                                subtr = $("<tr></tr>").appendTo(subtable);
+                                $("<td></td>").text(teacher[1]).attr({ align: "center", key: key }).appendTo(subtr);
+                                $(subtable).appendTo(ttr);
+
+                                subtable = $("<table></table>").attr({ border: "0" }).css({ width: "100%" });
+                                subtr = $("<tr></tr>").appendTo(subtable)
+                                $("<td></td>").text(course[0]).attr({ align: "center", key: key }).css({ "border-bottom": "0px solid #808080" }).appendTo(subtr);
+                                subtr = $("<tr></tr>").appendTo(subtable);
+                                $("<td></td>").text(course[1]).attr({ align: "center", key: key }).appendTo(subtr);
+                                $(subtable).appendTo(ctr);
+
+                                subtable = $("<table></table>").attr({ border: "0" }).css({ width: "100%" });
+                                subtr = $("<tr></tr>").appendTo(subtable)
+                                $("<td></td>").text(batch[0]).attr({ align: "center", key: key }).css({ "border-bottom": "0px solid #808080" }).appendTo(subtr);
+                                subtr = $("<tr></tr>").appendTo(subtable);
+                                $("<td></td>").text(batch[1]).attr({ align: "center", key: key }).appendTo(subtr);
+                                $(subtable).appendTo(btr);
+
+                            }
+                        } else {
+                            $("<td></td>").attr({ class: "slots", width: "130" }).appendTo(tr);
+                            $("<td></td>").attr({ class: "slots", width: "130" }).appendTo(tr);
+                            $("<td></td>").attr({ class: ["slots", "ends"].join(' '), width: "130" }).appendTo(tr);
+                        }
+                        //console.log(schedule[key] != undefined);
+                    });
+                });
+                var tr = $("<tr></tr>").appendTo(table);
+                $("<td></td>").attr({ colspan: "11", height: "5px" }).appendTo(tr);
+            });
+
+            table.appendTo("#schedule")
+		
+        });
+    }
+</script>

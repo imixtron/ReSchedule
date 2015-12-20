@@ -1,0 +1,32 @@
+﻿<nav class="nav-c row panel">
+
+    <div class="identity">
+        <img src="~/components/img/logo_low.png" />
+    </div>
+    <div class="links">
+        <ul>
+            <li>
+                @Html.ActionLink("Home", "index","home")
+            </li>
+            <li>
+                @Html.ActionLink("Schedule", "index", "Schedule")
+            </li>
+        </ul>
+    </div>
+
+    <div class="userinfo pull-right">
+        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="~/components/img/face1.jpg" class="img img-circle" /> Tanzeel
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="dropdown-header">Welcome</li>
+            <li><a href="javascript:void(0)">imixtron</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:void(0)">Profile</a></li>
+            <li><a href="javascript:void(0)">Settings</a></li>
+            <li><a href="javascript:void(0)">Logout</a></li>
+        </ul>
+    </div>
+
+</nav>

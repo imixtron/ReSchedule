@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="scheduleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="course">
+          <Key>
+            <PropertyRef Name="courseid" />
+          </Key>
+          <Property Name="courseid" Type="int" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="15" />
+          <Property Name="title" Type="varchar" MaxLength="100" />
+          <Property Name="hours" Type="varchar" MaxLength="10" />
+          <Property Name="abbrev" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="days">
+          <Key>
+            <PropertyRef Name="dayid" />
+          </Key>
+          <Property Name="dayid" Type="int" Nullable="false" />
+          <Property Name="dayname" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="offeredcourse">
+          <Key>
+            <PropertyRef Name="offid" />
+          </Key>
+          <Property Name="offid" Type="int" Nullable="false" />
+          <Property Name="secid" Type="int" />
+          <Property Name="courseid" Type="int" />
+          <Property Name="teacherid" Type="int" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="roomid" />
+          </Key>
+          <Property Name="roomid" Type="int" Nullable="false" />
+          <Property Name="roomno" Type="varchar" MaxLength="20" />
+          <Property Name="campus" Type="varchar" MaxLength="20" />
+          <Property Name="roomtype" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="schedule">
+          <Key>
+            <PropertyRef Name="schid" />
+          </Key>
+          <Property Name="schid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="offid" Type="int" />
+          <Property Name="slotid" Type="int" />
+          <Property Name="occupied" Type="int" />
+        </EntityType>
+        <EntityType Name="section">
+          <Key>
+            <PropertyRef Name="secid" />
+          </Key>
+          <Property Name="secid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sectionname" Type="varchar" MaxLength="50" />
+          <Property Name="programid" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="slots">
+          <Key>
+            <PropertyRef Name="slotid" />
+          </Key>
+          <Property Name="slotid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dayid" Type="int" Nullable="false" />
+          <Property Name="slottypeid" Type="int" Nullable="false" />
+          <Property Name="roomid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="slottype">
+          <Key>
+            <PropertyRef Name="slottypeid" />
+          </Key>
+          <Property Name="slottypeid" Type="int" Nullable="false" />
+          <Property Name="duration" Type="varchar" MaxLength="50" />
+          <Property Name="slotno" Type="int" />
+          <Property Name="slottype" Type="int" />
+          <Property Name="subslot" Type="int" />
+        </EntityType>
+        <EntityType Name="teacher">
+          <Key>
+            <PropertyRef Name="teacherid" />
+          </Key>
+          <Property Name="teacherid" Type="int" Nullable="false" />
+          <Property Name="teachername" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'schedule2.dbo.vschedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vschedule">
+          <Key>
+            <PropertyRef Name="schid" />
+            <PropertyRef Name="teacherid" />
+            <PropertyRef Name="courseid" />
+            <PropertyRef Name="dayid" />
+            <PropertyRef Name="slottypeid" />
+            <PropertyRef Name="subslotid" />
+            <PropertyRef Name="roomid" />
+          </Key>
+          <Property Name="schid" Type="int" Nullable="false" />
+          <Property Name="offid" Type="int" />
+          <Property Name="teacherid" Type="int" Nullable="false" />
+          <Property Name="teachername" Type="varchar" MaxLength="50" />
+          <Property Name="courseid" Type="int" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="100" />
+          <Property Name="sectionid" Type="varchar" MaxLength="50" />
+          <Property Name="sectionname" Type="varchar" MaxLength="50" />
+          <Property Name="programid" Type="varchar" MaxLength="50" />
+          <Property Name="slotid" Type="int" />
+          <Property Name="dayid" Type="int" Nullable="false" />
+          <Property Name="dayname" Type="varchar" MaxLength="20" />
+          <Property Name="duration" Type="varchar" MaxLength="50" />
+          <Property Name="slotno" Type="int" />
+          <Property Name="slottypeid" Type="int" Nullable="false" />
+          <Property Name="subslotid" Type="int" Nullable="false" />
+          <Property Name="occupied" Type="int" />
+          <Property Name="roomid" Type="int" Nullable="false" />
+          <Property Name="roomno" Type="varchar" MaxLength="20" />
+          <Property Name="campus" Type="varchar" MaxLength="20" />
+          <Property Name="roomtype" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'schedule2.dbo.vslottype' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vslottype">
+          <Key>
+            <PropertyRef Name="slottypeid" />
+            <PropertyRef Name="subslotid" />
+          </Key>
+          <Property Name="slottypeid" Type="int" Nullable="false" />
+          <Property Name="duration" Type="varchar" MaxLength="50" />
+          <Property Name="slotno" Type="int" />
+          <Property Name="sort" Type="numeric" Precision="12" Scale="1" />
+          <Property Name="subslotid" Type="int" Nullable="false" />
+          <Property Name="occupied" Type="int" />
+        </EntityType>
+        <EntityContainer Name="scheduleModelStoreContainer">
+          <EntitySet Name="course" EntityType="Self.course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="days" EntityType="Self.days" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="offeredcourse" EntityType="Self.offeredcourse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="room" EntityType="Self.room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="schedule" EntityType="Self.schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="section" EntityType="Self.section" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="slots" EntityType="Self.slots" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="slottype" EntityType="Self.slottype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="teacher" EntityType="Self.teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vschedule" EntityType="Self.vschedule" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vschedule].[schid] AS [schid], 
+    [vschedule].[offid] AS [offid], 
+    [vschedule].[teacherid] AS [teacherid], 
+    [vschedule].[teachername] AS [teachername], 
+    [vschedule].[courseid] AS [courseid], 
+    [vschedule].[title] AS [title], 
+    [vschedule].[sectionid] AS [sectionid], 
+    [vschedule].[sectionname] AS [sectionname], 
+    [vschedule].[programid] AS [programid], 
+    [vschedule].[slotid] AS [slotid], 
+    [vschedule].[dayid] AS [dayid], 
+    [vschedule].[dayname] AS [dayname], 
+    [vschedule].[duration] AS [duration], 
+    [vschedule].[slotno] AS [slotno], 
+    [vschedule].[slottypeid] AS [slottypeid], 
+    [vschedule].[subslotid] AS [subslotid], 
+    [vschedule].[occupied] AS [occupied], 
+    [vschedule].[roomid] AS [roomid], 
+    [vschedule].[roomno] AS [roomno], 
+    [vschedule].[campus] AS [campus], 
+    [vschedule].[roomtype] AS [roomtype]
+    FROM [dbo].[vschedule] AS [vschedule]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vslottype" EntityType="Self.vslottype" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vslottype].[slottypeid] AS [slottypeid], 
+    [vslottype].[duration] AS [duration], 
+    [vslottype].[slotno] AS [slotno], 
+    [vslottype].[sort] AS [sort], 
+    [vslottype].[subslotid] AS [subslotid], 
+    [vslottype].[occupied] AS [occupied]
+    FROM [dbo].[vslottype] AS [vslottype]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="scheduleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="day">
+          <Key>
+            <PropertyRef Name="dayid" />
+          </Key>
+          <Property Name="dayid" Type="Int32" Nullable="false" />
+          <Property Name="dayname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="roomid" />
+          </Key>
+          <Property Name="roomid" Type="Int32" Nullable="false" />
+          <Property Name="roomno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="campus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="roomtype" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="slottype">
+          <Key>
+            <PropertyRef Name="slottypeid" />
+          </Key>
+          <Property Name="slottypeid" Type="Int32" Nullable="false" />
+          <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="slotno" Type="Int32" />
+          <Property Name="slottype1" Type="Int32" />
+          <Property Name="subslot" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vschedule">
+          <Key>
+            <PropertyRef Name="schid" />
+            <PropertyRef Name="teacherid" />
+            <PropertyRef Name="courseid" />
+            <PropertyRef Name="dayid" />
+            <PropertyRef Name="slottypeid" />
+            <PropertyRef Name="subslotid" />
+            <PropertyRef Name="roomid" />
+          </Key>
+          <Property Name="schid" Type="Int32" Nullable="false" />
+          <Property Name="offid" Type="Int32" />
+          <Property Name="teacherid" Type="Int32" Nullable="false" />
+          <Property Name="teachername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="courseid" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="sectionid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sectionname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="programid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="slotid" Type="Int32" />
+          <Property Name="dayid" Type="Int32" Nullable="false" />
+          <Property Name="dayname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="slotno" Type="Int32" />
+          <Property Name="slottypeid" Type="Int32" Nullable="false" />
+          <Property Name="subslotid" Type="Int32" Nullable="false" />
+          <Property Name="occupied" Type="Int32" />
+          <Property Name="roomid" Type="Int32" Nullable="false" />
+          <Property Name="roomno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="campus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="roomtype" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vslottype">
+          <Key>
+            <PropertyRef Name="slottypeid" />
+            <PropertyRef Name="subslotid" />
+          </Key>
+          <Property Name="slottypeid" Type="Int32" Nullable="false" />
+          <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="slotno" Type="Int32" />
+          <Property Name="sort" Type="Decimal" Precision="12" Scale="1" />
+          <Property Name="subslotid" Type="Int32" Nullable="false" />
+          <Property Name="occupied" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="vscheduleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="days" EntityType="Self.day" />
+          <EntitySet Name="rooms" EntityType="Self.room" />
+          <EntitySet Name="slottypes" EntityType="Self.slottype" />
+          <EntitySet Name="vschedules" EntityType="Self.vschedule" />
+          <EntitySet Name="vslottypes" EntityType="Self.vslottype" />
+          <EntitySet Name="schedules" EntityType="scheduleModel.schedule" />
+          <EntitySet Name="courses" EntityType="scheduleModel.course" />
+          <EntitySet Name="sections" EntityType="scheduleModel.section" />
+          <EntitySet Name="offeredcourses" EntityType="scheduleModel.offeredcourse" />
+          <EntitySet Name="slots" EntityType="scheduleModel.slot" />
+          <EntitySet Name="teachers" EntityType="scheduleModel.teacher" />
+        </EntityContainer>
+        <EntityType Name="schedule">
+          <Key>
+            <PropertyRef Name="schid" />
+          </Key>
+          <Property Name="schid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="offid" Type="Int32" />
+          <Property Name="slotid" Type="Int32" />
+          <Property Name="occupied" Type="Int32" />
+        </EntityType>
+        <EntityType Name="course">
+          <Key>
+            <PropertyRef Name="courseid" />
+          </Key>
+          <Property Name="courseid" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="hours" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="abbrev" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="section">
+          <Key>
+            <PropertyRef Name="secid" />
+          </Key>
+          <Property Name="secid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sectionname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="programid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="offeredcourse">
+          <Key>
+            <PropertyRef Name="offid" />
+          </Key>
+          <Property Name="offid" Type="Int32" Nullable="false" />
+          <Property Name="secid" Type="Int32" />
+          <Property Name="courseid" Type="Int32" />
+          <Property Name="teacherid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="slot">
+          <Key>
+            <PropertyRef Name="slotid" />
+          </Key>
+          <Property Name="slotid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dayid" Type="Int32" Nullable="false" />
+          <Property Name="slottypeid" Type="Int32" Nullable="false" />
+          <Property Name="roomid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="teacher">
+          <Key>
+            <PropertyRef Name="teacherid" />
+          </Key>
+          <Property Name="teacherid" Type="Int32" Nullable="false" />
+          <Property Name="teachername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="scheduleModelStoreContainer" CdmEntityContainer="vscheduleEntities">
+          <EntitySetMapping Name="days">
+            <EntityTypeMapping TypeName="scheduleModel.day">
+              <MappingFragment StoreEntitySet="days">
+                <ScalarProperty Name="dayid" ColumnName="dayid" />
+                <ScalarProperty Name="dayname" ColumnName="dayname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rooms">
+            <EntityTypeMapping TypeName="scheduleModel.room">
+              <MappingFragment StoreEntitySet="room">
+                <ScalarProperty Name="roomid" ColumnName="roomid" />
+                <ScalarProperty Name="roomno" ColumnName="roomno" />
+                <ScalarProperty Name="campus" ColumnName="campus" />
+                <ScalarProperty Name="roomtype" ColumnName="roomtype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="slottypes">
+            <EntityTypeMapping TypeName="scheduleModel.slottype">
+              <MappingFragment StoreEntitySet="slottype">
+                <ScalarProperty Name="slottypeid" ColumnName="slottypeid" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="slotno" ColumnName="slotno" />
+                <ScalarProperty Name="slottype1" ColumnName="slottype" />
+                <ScalarProperty Name="subslot" ColumnName="subslot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vschedules">
+            <EntityTypeMapping TypeName="scheduleModel.vschedule">
+              <MappingFragment StoreEntitySet="vschedule">
+                <ScalarProperty Name="schid" ColumnName="schid" />
+                <ScalarProperty Name="offid" ColumnName="offid" />
+                <ScalarProperty Name="teacherid" ColumnName="teacherid" />
+                <ScalarProperty Name="teachername" ColumnName="teachername" />
+                <ScalarProperty Name="courseid" ColumnName="courseid" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="sectionid" ColumnName="sectionid" />
+                <ScalarProperty Name="sectionname" ColumnName="sectionname" />
+                <ScalarProperty Name="programid" ColumnName="programid" />
+                <ScalarProperty Name="slotid" ColumnName="slotid" />
+                <ScalarProperty Name="dayid" ColumnName="dayid" />
+                <ScalarProperty Name="dayname" ColumnName="dayname" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="slotno" ColumnName="slotno" />
+                <ScalarProperty Name="slottypeid" ColumnName="slottypeid" />
+                <ScalarProperty Name="subslotid" ColumnName="subslotid" />
+                <ScalarProperty Name="occupied" ColumnName="occupied" />
+                <ScalarProperty Name="roomid" ColumnName="roomid" />
+                <ScalarProperty Name="roomno" ColumnName="roomno" />
+                <ScalarProperty Name="campus" ColumnName="campus" />
+                <ScalarProperty Name="roomtype" ColumnName="roomtype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vslottypes">
+            <EntityTypeMapping TypeName="scheduleModel.vslottype">
+              <MappingFragment StoreEntitySet="vslottype">
+                <ScalarProperty Name="slottypeid" ColumnName="slottypeid" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="slotno" ColumnName="slotno" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="subslotid" ColumnName="subslotid" />
+                <ScalarProperty Name="occupied" ColumnName="occupied" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="schedules">
+            <EntityTypeMapping TypeName="scheduleModel.schedule">
+              <MappingFragment StoreEntitySet="schedule">
+                <ScalarProperty Name="occupied" ColumnName="occupied" />
+                <ScalarProperty Name="slotid" ColumnName="slotid" />
+                <ScalarProperty Name="offid" ColumnName="offid" />
+                <ScalarProperty Name="schid" ColumnName="schid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="courses">
+            <EntityTypeMapping TypeName="scheduleModel.course">
+              <MappingFragment StoreEntitySet="course">
+                <ScalarProperty Name="abbrev" ColumnName="abbrev" />
+                <ScalarProperty Name="hours" ColumnName="hours" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="courseid" ColumnName="courseid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sections">
+            <EntityTypeMapping TypeName="scheduleModel.section">
+              <MappingFragment StoreEntitySet="section">
+                <ScalarProperty Name="programid" ColumnName="programid" />
+                <ScalarProperty Name="sectionname" ColumnName="sectionname" />
+                <ScalarProperty Name="secid" ColumnName="secid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="offeredcourses">
+            <EntityTypeMapping TypeName="scheduleModel.offeredcourse">
+              <MappingFragment StoreEntitySet="offeredcourse">
+                <ScalarProperty Name="teacherid" ColumnName="teacherid" />
+                <ScalarProperty Name="courseid" ColumnName="courseid" />
+                <ScalarProperty Name="secid" ColumnName="secid" />
+                <ScalarProperty Name="offid" ColumnName="offid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="slots">
+            <EntityTypeMapping TypeName="scheduleModel.slot">
+              <MappingFragment StoreEntitySet="slots">
+                <ScalarProperty Name="roomid" ColumnName="roomid" />
+                <ScalarProperty Name="slottypeid" ColumnName="slottypeid" />
+                <ScalarProperty Name="dayid" ColumnName="dayid" />
+                <ScalarProperty Name="slotid" ColumnName="slotid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="teachers">
+            <EntityTypeMapping TypeName="scheduleModel.teacher">
+              <MappingFragment StoreEntitySet="teacher">
+                <ScalarProperty Name="teachername" ColumnName="teachername" />
+                <ScalarProperty Name="teacherid" ColumnName="teacherid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
